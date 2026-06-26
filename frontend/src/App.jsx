@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const BACKEND_URL = 'https://student-ai-decision-support.onrender.com';
+const BACKEND_URL = 'https://student-ai-decision-support.onrender.com/analyze';
 
 export default function App() {
   // Navigation / Router State: 'login' | 'dashboard' | 'analysis' | 'results'

@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { OpenAI } = require('openai');
+const pool = require("./db");
 
 // Load environment variables
 dotenv.config();
@@ -97,7 +98,20 @@ ${cleanedOptions.map((opt, idx) => `${idx + 1}. "${opt}"`).join('\n')}`;
     const content = response.choices[0].message.content;
     const parsedData = JSON.parse(content);
 
-    return res.json(parsedData);
+    // Save analysis to PostgreSQL
+    await pool.query(
+      `INSERT INTO decisions
+      (question, options, recommendation, explanation)
+      VALUES ($1, $2, $3, $4)`,
+      [
+        question,
+        JSON.stringify(cleanedOptions),
+        parsedData.finalRecommendation,
+        JSON.stringify(parsedData.rankings)
+      ]
+    );
+
+return res.json(parsedData);
 
   } catch (error) {
     console.error('Error contacting Groq API:', error);

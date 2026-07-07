@@ -100,16 +100,16 @@ ${cleanedOptions.map((opt, idx) => `${idx + 1}. "${opt}"`).join('\n')}`;
 
     // Save analysis to PostgreSQL
     await pool.query(
-      `INSERT INTO decisions
-      (question, options, recommendation, explanation)
-      VALUES ($1, $2, $3, $4)`,
-      [
-        question,
-        JSON.stringify(cleanedOptions),
-        parsedData.finalRecommendation,
-        JSON.stringify(parsedData.rankings)
-      ]
-    );
+    `INSERT INTO decisions
+    (question, options, recommendation, rankings)
+    VALUES ($1, $2, $3, $4)`,
+    [
+      question,
+      JSON.stringify(cleanedOptions),
+      parsedData.finalRecommendation,
+      JSON.stringify(parsedData.rankings)
+    ]
+  );
 
 return res.json(parsedData);
 

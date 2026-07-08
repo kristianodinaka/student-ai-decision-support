@@ -100,7 +100,9 @@ export default function App() {
         setAuthError("Failed to connect to server");
       }
     } else {
+        console.log("Login button clicked");
         try {
+           console.log("Sending login request");
           const response = await fetch(`${BACKEND_URL}/login`, {
             method: "POST",
             headers: {

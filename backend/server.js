@@ -67,6 +67,47 @@ app.post("/register", async (req, res) => {
   }
 });
 
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const result = await pool.query(
+      "SELECT * FROM users WHERE username = $1",
+      [username]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(401).json({
+        error: "Invalid username or password"
+      });
+    }
+
+    const user = result.rows[0];
+
+    const validPassword = await bcrypt.compare(
+      password,
+      user.password
+    );
+
+    if (!validPassword) {
+      return res.status(401).json({
+        error: "Invalid username or password"
+      });
+    }
+
+    res.json({
+      success: true,
+      username: user.username
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Login failed"
+    });
+  }
+});
+
 
 // Endpoint to analyze options
 app.post('/analyze', async (req, res) => {

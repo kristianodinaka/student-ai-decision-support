@@ -100,24 +100,36 @@ export default function App() {
         setAuthError("Failed to connect to server");
       }
     } else {
-      // Login logic
-      const matchedUser = users.find(
-        u => u.username.toLowerCase() === username.toLowerCase() && u.password === password
-      );
+        try {
+          const response = await fetch(`${BACKEND_URL}/login`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username,
+              password,
+            }),
+          });
 
-      if (!matchedUser) {
-        setAuthError('Invalid username or password.');
-        return;
-      }
+          const data = await response.json();
 
-      localStorage.setItem('currentUser', username);
-      setCurrentUser(username);
-      setUsernameInput('');
-      setPasswordInput('');
-      loadHistory(username);
-      setCurrentPage('dashboard');
-    }
-  };
+          if (!response.ok) {
+            setAuthError(data.error || "Invalid username or password.");
+            return;
+          }
+
+          localStorage.setItem('currentUser', data.username);
+          setCurrentUser(data.username);
+          setUsernameInput('');
+          setPasswordInput('');
+          loadHistory(data.username);
+          setCurrentPage('dashboard');
+
+        } catch (err) {
+          setAuthError("Login failed");
+        }
+}
 
   const handleLogout = () => {
     localStorage.removeItem('currentUser');

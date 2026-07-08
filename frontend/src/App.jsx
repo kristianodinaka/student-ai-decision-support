@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const BACKEND_URL = 'https://student-ai-decision-support.onrender.com/analyze';
+const BACKEND_URL = 'https://student-ai-decision-support.onrender.com';
 
 export default function App() {
   // Navigation / Router State: 'login' | 'dashboard' | 'analysis' | 'results'
@@ -73,17 +73,32 @@ export default function App() {
 
     if (authMode === 'register') {
       // Register logic
-      const userExists = users.some(u => u.username.toLowerCase() === username.toLowerCase());
-      if (userExists) {
-        setAuthError('Username is already registered.');
-        return;
-      }
+      try {
+        const response = await fetch(`${BACKEND_URL}/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username,
+            password,
+          }),
+        });
 
-      users.push({ username, password });
-      localStorage.setItem('users', JSON.stringify(users));
-      setAuthSuccess('Registration successful! Please log in.');
-      setAuthMode('login');
-      setPasswordInput('');
+        const data = await response.json();
+
+        if (!response.ok) {
+          setAuthError(data.error || "Registration failed");
+          return;
+        }
+
+        setAuthSuccess("Registration successful! Please log in.");
+        setAuthMode("login");
+        setPasswordInput("");
+
+      } catch (err) {
+        setAuthError("Failed to connect to server");
+      }
     } else {
       // Login logic
       const matchedUser = users.find(
@@ -154,7 +169,7 @@ export default function App() {
     setIsAnalyzing(true);
 
     try {
-      const response = await fetch(BACKEND_URL, {
+      const response = await fetch(`${BACKEND_URL}/analyze`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

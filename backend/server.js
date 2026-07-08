@@ -65,8 +65,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// Existing route
-app.post('/analyze', async (req, res) => {
+
 
 // Endpoint to analyze options
 app.post('/analyze', async (req, res) => {

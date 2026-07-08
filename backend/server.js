@@ -1,4 +1,6 @@
-
+app.get("/test", (req, res) => {
+  res.json({ message: "Backend updated" });
+});
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');

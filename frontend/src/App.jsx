@@ -51,7 +51,7 @@ export default function App() {
   };
 
   // Auth Handlers
-  const handleAuthSubmit = (e) => {
+  const handleAuthSubmit = async (e) => {
     e.preventDefault();
     setAuthError('');
     setAuthSuccess('');

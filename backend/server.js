@@ -1,6 +1,4 @@
-app.get("/test", (req, res) => {
-  res.json({ message: "Backend updated" });
-});
+
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -21,6 +19,10 @@ app.use(cors({
   allowedHeaders: ['Content-Type']
 }));
 app.use(express.json());
+
+app.get("/test", (req, res) => {
+  res.json({ message: "Backend updated" });
+});
 
 // Initialize OpenAI client for Groq
 const apiKey = process.env.GROQ_API_KEY;
@@ -64,7 +66,6 @@ app.post("/register", async (req, res) => {
     });
   }
 });
-
 
 
 // Endpoint to analyze options

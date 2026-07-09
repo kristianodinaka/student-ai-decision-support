@@ -342,7 +342,7 @@ export default function App() {
               </form>
             </div>
             <p className="text-secondary text-small" style={{ textAlign: 'center', marginTop: '12px' }}>
-              Credentials are stored in your browser's local storage.
+                User accounts are securely stored in the database.
             </p>
           </div>
         )}

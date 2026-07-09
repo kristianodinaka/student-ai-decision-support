@@ -64,12 +64,7 @@ export default function App() {
       return;
     }
 
-    let users = [];
-    try {
-      users = JSON.parse(localStorage.getItem('users') || '[]');
-    } catch (err) {
-      users = [];
-    }
+    
 
     if (authMode === 'register') {
       // Register logic
@@ -131,7 +126,8 @@ export default function App() {
         } catch (err) {
           setAuthError("Login failed");
         }
-}
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('currentUser');
